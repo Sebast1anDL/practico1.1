@@ -1,0 +1,13 @@
+[phases.build]
+cmds = [
+    "mvn clean package -DskipTests",
+    "chmod +x start-wildfly.sh"
+]
+
+[phases.start]
+cmd = "./start-wildfly.sh"
+
+[variables]
+MAVEN_OPTS = "-Xmx1024m -Xms512m"
+PORT = "8080"
+JBOSS_HOME = "./target/wildfly-30.0.1.Final"
