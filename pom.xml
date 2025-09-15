@@ -66,7 +66,7 @@
                 </configuration>
             </plugin>
 
-            <!-- WAR Plugin -->
+            <!-- WAR Plugin (necesario para web apps) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -81,27 +81,26 @@
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>5.0.0.Final</version>
+                <configuration>
+                    <feature-packs>
+                        <feature-pack>
+                            <location>wildfly@maven(org.jboss.universe:community-universe)#${wildfly.version}</location>
+                        </feature-pack>
+                    </feature-packs>
+                    <layers>
+                        <layer>web-server</layer>
+                        <layer>ejb-lite</layer>
+                        <layer>cdi</layer>
+                    </layers>
+                    <plugin-options>
+                        <jboss-fork-embedded>true</jboss-fork-embedded>
+                    </plugin-options>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>package-server</id>
-                        <phase>package</phase>
                         <goals>
                             <goal>package</goal>
                         </goals>
-                        <configuration>
-                            <bootable-jar>true</bootable-jar>
-                            <forceBuild>true</forceBuild>
-                            <feature-packs>
-                                <feature-pack>
-                                    <location>wildfly@maven(org.jboss.universe:community-universe)#${wildfly.version}</location>
-                                </feature-pack>
-                            </feature-packs>
-                            <layers>
-                                <layer>web-server</layer>
-                                <layer>ejb-lite</layer>
-                                <layer>cdi</layer>
-                            </layers>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
