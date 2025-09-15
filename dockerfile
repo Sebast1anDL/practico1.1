@@ -40,11 +40,8 @@ exec /opt/jboss/wildfly/bin/standalone.sh \\
   -Djava.net.preferIPv4Stack=true
 EOF
 
-# Cambiar al usuario jboss
 USER jboss
 
-# Exponer puerto dinámico
 EXPOSE 8080
 
-# Comando de inicio
 CMD ["/opt/jboss/start.sh"]
