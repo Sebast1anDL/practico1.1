@@ -67,12 +67,9 @@ RUN chmod +x /opt/jboss/start.sh
 # Cambiar a usuario no-root
 USER railway
 
-# Exponer puerto
 EXPOSE 8080
 
-# Health check para Railway
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:${PORT:-8080}/trabajador-salud-app/ || exit 1
 
-# Comando de inicio
 CMD ["/opt/jboss/start.sh"]
