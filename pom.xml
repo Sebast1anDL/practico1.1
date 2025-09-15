@@ -9,15 +9,14 @@
     <groupId>com.salud.trabajadores</groupId>
     <artifactId>trabajador-salud-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>24</maven.compiler.source>
-        <maven.compiler.target>24</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <jakarta.version>10.0.0</jakarta.version>
         <wildfly.version>37.0.1.Final</wildfly.version>
-        <wildfly.maven.plugin.version>5.0.0.Final</wildfly.maven.plugin.version>
         <failOnMissingWebXml>false</failOnMissingWebXml>
     </properties>
 
@@ -66,7 +65,7 @@
                 </configuration>
             </plugin>
 
-            <!-- WAR Plugin (necesario para web apps) -->
+            <!-- WAR Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -92,15 +91,16 @@
                         <layer>ejb-lite</layer>
                         <layer>cdi</layer>
                     </layers>
-                    <plugin-options>
-                        <jboss-fork-embedded>true</jboss-fork-embedded>
-                    </plugin-options>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>package</goal>
                         </goals>
+                        <configuration>
+                            <bootable-jar>true</bootable-jar>
+                            <bootable-jar-name>trabajador-salud-app-bootable.jar</bootable-jar-name>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
