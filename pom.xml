@@ -88,8 +88,10 @@
                     </feature-packs>
                     <layers>
                         <layer>web-server</layer>
-                        <layer>ejb-lite</layer>
+                        <layer>ejb</layer>
                         <layer>cdi</layer>
+                        <layer>jpa</layer>
+                        <layer>transactions</layer>
                     </layers>
                 </configuration>
                 <executions>
@@ -100,6 +102,7 @@
                         <configuration>
                             <bootable-jar>true</bootable-jar>
                             <bootable-jar-name>trabajador-salud-app-bootable.jar</bootable-jar-name>
+                            <context-root>/</context-root>
                         </configuration>
                     </execution>
                 </executions>
