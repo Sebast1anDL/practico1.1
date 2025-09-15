@@ -1,12 +1,8 @@
 [build]
-builder = "NIXPACKS"
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "sh start-wildfly.sh"
 healthcheckPath = "/"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
-
-[env]
-PORT = "8080"
-JBOSS_HOME = "./target/wildfly-30.0.1.Final"
