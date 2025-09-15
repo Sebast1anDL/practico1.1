@@ -1,0 +1,19 @@
+# Archivos que Railway no necesita
+target/
+.git/
+.gitignore
+*.md
+README*
+.DS_Store
+.vscode/
+.idea/
+*.log
+*.tmp
+
+# Documentación
+docs/
+documentation/
+
+# Archivos de configuración local
+.env
+.env.local

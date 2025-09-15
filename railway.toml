@@ -6,9 +6,3 @@ dockerfilePath = "dockerfile"
 healthcheckPath = "/trabajador-salud-app/"
 healthcheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 3
-
-# Variables de entorno específicas para Railway
-[deploy.env]
-PORT = "8080"
-JAVA_TOOL_OPTIONS = "-XX:MaxRAMPercentage=75.0"
