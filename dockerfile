@@ -1,14 +1,11 @@
 FROM maven:3.9.4-eclipse-temurin-17 AS build
 
-# Copiar archivos del proyecto
 COPY pom.xml /app/
 COPY src /app/src/
 WORKDIR /app
 
-# Compilar y empaquetar
 RUN mvn clean package -DskipTests
 
-# Etapa de runtime con Wildfly
 FROM quay.io/wildfly/wildfly:30.0.1.Final-jdk17
 
 # Copiar el WAR compilado
@@ -28,11 +25,9 @@ echo "=== Iniciando Wildfly en Railway con Docker ==="
 echo "PORT: \$PORT"
 echo "JAVA_OPTS: \$JAVA_OPTS"
 
-# Mostrar deployments
 echo "=== Archivos en deployments ==="
 ls -la /opt/jboss/wildfly/standalone/deployments/
 
-# Iniciar Wildfly
 exec /opt/jboss/wildfly/bin/standalone.sh \\
   -b 0.0.0.0 \\
   -bmanagement 0.0.0.0 \\
