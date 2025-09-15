@@ -4,20 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.salud.trabajadores</groupId>
+    <groupId>com.trabajador.salud</groupId>
     <artifactId>trabajador-salud-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <name>trabajador-salud-app</name>
+
     <properties>
-        <!-- Java 17 para Railway -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jakarta.version>10.0.0</jakarta.version>
-        <wildfly.version>32.0.1.Final</wildfly.version>
-        <!-- Propiedades específicas para Railway -->
-        <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+        <jakartaee.version>10.0.0</jakartaee.version>
     </properties>
 
     <dependencies>
@@ -25,154 +23,76 @@
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>${jakarta.version}</version>
+            <version>${jakartaee.version}</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- JSTL para JSP -->
-        <dependency>
-            <groupId>jakarta.servlet.jsp.jstl</groupId>
-            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-            <version>3.0.1</version>
-        </dependency>
-
-        <!-- JUnit para testing -->
+        <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.11.0</version>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.9.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.9.3</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>trabajador-salud-app</finalName>
         <plugins>
+            <!-- Maven Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-
-            <!-- Plugin para descargar Wildfly -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.0</version>
-                <executions>
-                    <execution>
-                        <id>unpack-wildfly</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.wildfly</groupId>
-                                    <artifactId>wildfly-dist</artifactId>
-                                    <version>${wildfly.version}</version>
-                                    <type>zip</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}</outputDirectory>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Plugin Wildfly optimizado para Railway -->
-            <plugin>
-                <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-maven-plugin</artifactId>
-                <version>5.0.0.Final</version>
-                <configuration>
-                    <version>${wildfly.version}</version>
-                    <server-config>standalone.xml</server-config>
-                    <jboss-home>${project.build.directory}/wildfly-${wildfly.version}</jboss-home>
-                    <port>9990</port>
-                    <timeout>120</timeout>
-                    <server-args>
-                        <server-arg>-b</server-arg>
-                        <server-arg>0.0.0.0</server-arg>
-                        <server-arg>-bmanagement</server-arg>
-                        <server-arg>0.0.0.0</server-arg>
-                        <server-arg>-Djboss.http.port=${PORT:8080}</server-arg>
-                        <server-arg>-Djboss.management.http.port=${MGMT_PORT:9990}</server-arg>
-                    </server-args>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>start-server</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>deploy-application</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Plugin exec para Railway -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <mainClass>org.jboss.as.server.Main</mainClass>
-                    <options>
-                        <option>-b</option>
-                        <option>0.0.0.0</option>
-                        <option>-bmanagement</option>
-                        <option>0.0.0.0</option>
-                        <option>-Djboss.http.port=${PORT:8080}</option>
-                    </options>
-                    <workingDirectory>${project.build.directory}/wildfly-${wildfly.version}/bin</workingDirectory>
+                    <release>17</release>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
-    <!-- Perfiles para diferentes entornos -->
     <profiles>
+        <!-- Railway profile -->
         <profile>
             <id>railway</id>
-            <activation>
-                <property>
-                    <name>env.RAILWAY_ENVIRONMENT</name>
-                </property>
-            </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.wildfly.plugins</groupId>
                         <artifactId>wildfly-maven-plugin</artifactId>
+                        <version>5.0.0.Final</version>
+                        <executions>
+                            <execution>
+                                <id>package-server</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>package</goal>
+                                </goals>
+                                <configuration>
+                                    <bootable-jar>true</bootable-jar>
+                                    <context-root>false</context-root>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Alias production (igual que railway) -->
+        <profile>
+            <id>production</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.wildfly.plugins</groupId>
+                        <artifactId>wildfly-maven-plugin</artifactId>
+                        <version>5.0.0.Final</version>
                         <executions>
                             <execution>
                                 <id>package-server</id>
