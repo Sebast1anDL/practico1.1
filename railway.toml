@@ -1,8 +1,5 @@
 [build]
-builder = "DOCKERFILE"
-dockerfilePath = "dockerfile"
+builder = "NIXPACKS"
 
 [deploy]
-healthcheckPath = "/trabajador-salud-app/"
-healthcheckTimeout = 120
-restartPolicyType = "ON_FAILURE"
+startCommand = "./run.sh"
