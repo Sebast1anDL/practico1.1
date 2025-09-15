@@ -1,1 +1,1 @@
-web: java -jar target/*-bootable.jar
+web: java -Djboss.http.port=$PORT -Djboss.bind.address=0.0.0.0 -jar target/trabajador-salud-app-bootable.jar
